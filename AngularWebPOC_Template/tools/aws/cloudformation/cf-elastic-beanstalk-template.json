@@ -1,0 +1,145 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "AWS stack for a load-balanced cluster of NodeJS application servers",
+    "Parameters": {
+        "AsgMaxSize": {
+            "Type": "Number",
+            "Default": 1,
+            "MinValue": 1,
+            "Description": "Maximum number of instances the auto-scaling group should have running at any given time."
+            },
+        "AsgMinSize": {
+            "Type": "Number",
+            "Default": 1,
+            "MinValue": 1,
+            "Description": "Minimum number of instances the auto-scaling group should have running at any given time."
+            },
+        "S3Bucket": {
+            "Type": "String",
+            "Description": "Name of the S3 Bucket containing the application resources to be deployed to the EC2 instances in the auto scaling group."
+            },
+        "S3Key":{
+            "Type": "String",
+            "Description": "Key within the S3 Bucket identifying the folder or zip file containing the resources to be deployed."
+            },
+        "NodeEnvironment" : {
+            "Type": "String",
+            "Description": "Node environment variable to determine which context to run application in"
+        },
+        "NodeVersion" : {
+            "Type": "String",
+            "Default": "0.10.31",
+            "AllowedValues": ["0.8.26", "0.8.28", "0.10.21", "0.10.26", "0.10.31"],
+            "Description": "NodeJS version to be installed on the EC2 instances"
+            },
+        "InstanceType": {
+            "Default": "t2.micro",
+            "Description": "WebServer EC2 instance type",
+            "Type": "String"
+        },
+        "KeyName": {
+            "ConstraintDescription": "must be the name of an existing EC2 KeyPair.",
+            "Description": "Name of an existing EC2 KeyPair to enable SSH access to the instances",
+            "Type": "AWS::EC2::KeyPair::KeyName"
+        }
+    },
+    "Resources": {
+        "app": {
+            "Properties": {
+                "Description": "AWS Elastic Beanstalk Sample Application"
+            },
+            "Type": "AWS::ElasticBeanstalk::Application"
+        },
+        "appEnvironment": {
+            "Properties": {
+                "ApplicationName": {
+                    "Ref": "app"
+                },
+                "Description": "AWS ElasticBeanstalk Sample Environment",
+                "TemplateName": {
+                    "Ref": "configTemplate"
+                },
+                "VersionLabel": {
+                    "Ref": "appVersion"
+                }
+            },
+            "Type": "AWS::ElasticBeanstalk::Environment"
+        },
+        "appVersion": {
+            "Properties": {
+                "ApplicationName": {
+                    "Ref": "app"
+                },
+                "SourceBundle": {
+                    "S3Bucket": {
+                        "Ref": "S3Bucket"
+                        },
+                    "S3Key": {
+                        "Ref": "S3Key"
+                    }
+                }
+            },
+            "Type": "AWS::ElasticBeanstalk::ApplicationVersion"
+        },
+        "configTemplate": {
+            "Properties": {
+                "ApplicationName": {
+                    "Ref": "app"
+                },
+                "Description": "AWS ElasticBeanstalk Sample Configuration Template",
+                "OptionSettings": [
+                    {
+                        "Namespace": "aws:autoscaling:asg",
+                        "OptionName": "MinSize",
+                        "Value": {
+                            "Ref": "AsgMinSize"
+                        }
+                    },
+                    {
+                        "Namespace": "aws:autoscaling:asg",
+                        "OptionName": "MaxSize",
+                        "Value": {
+                            "Ref": "AsgMaxSize"
+                        }
+                    },
+                    {
+                        "Namespace": "aws:elasticbeanstalk:environment",
+                        "OptionName": "EnvironmentType",
+                        "Value": "LoadBalanced"
+                    },
+                    {
+                        "Namespace": "aws:elasticbeanstalk:application:environment",
+                        "OptionName": "NODE_ENV",
+                        "Value": {
+                            "Ref": "NodeEnvironment"
+                        }
+                    },
+                    {
+                        "Namespace": "aws:elasticbeanstalk:container:nodejs",
+                        "OptionName": "NodeVersion",
+                        "Value": {
+                            "Ref": "NodeVersion"
+                        }
+                    },
+                    {
+                        "Namespace": "aws:autoscaling:launchconfiguration",
+                        "OptionName": "EC2KeyName",
+                        "Value": {
+                            "Ref": "KeyName"
+                        }
+                    }
+                ],
+                "SolutionStackName": "64bit Amazon Linux 2014.09 v1.1.0 running Node.js"
+            },
+            "Type": "AWS::ElasticBeanstalk::ConfigurationTemplate"
+        }
+    },
+    "Outputs": {
+        "ElasticLoadBalancerURL": {
+            "Description": "The URL of the elastic load balancer",
+            "Value": {
+                "Fn::GetAtt" : [ "appEnvironment", "EndpointURL" ]
+            }
+        }
+    }
+}

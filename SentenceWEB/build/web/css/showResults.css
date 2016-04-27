@@ -1,0 +1,20 @@
+/* 
+    Created on : Mar 4, 2016, 1:48:22 PM
+    Author     : Joseph Richard
+*/
+
+#KEY input[disabled="disabled"]  {
+    background-color: #808080;
+}
+
+#VALUE input[disabled="disabled"]  {
+    background-color: #808080;
+}
+
+#sentenceBox input[disabled="disabled"]  {
+    background-color: #808080;
+}
+
+#submitButton input[disabled="disabled"]  {
+    background-color: #808080;
+}

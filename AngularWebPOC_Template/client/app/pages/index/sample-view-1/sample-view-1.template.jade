@@ -1,0 +1,10 @@
+.sample-view-1
+  .container
+    .row
+      .col-xs-12
+        h2 Sample View 1
+        p.message {{message}}
+        p Today is {{aDate | sampleDateFilter}}
+        p A sample service call response {{sampleResponseData}}
+        p Sample model value: {{sampleModel.getSampleProp()}}
+        sample-directive

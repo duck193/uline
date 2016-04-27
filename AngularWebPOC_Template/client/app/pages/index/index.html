@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+  <meta name="keywords" content="Slalom">
+  <meta name="description" content="Slalom">
+  <meta name="author" content="Slalom">
+  <link href="favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  <title>NG-MULTI-PAGE</title>
+
+  <!-- build:css css/main.css -->
+  <link href="css/main.css" rel="stylesheet">
+  <!-- endbuild -->
+
+  <!--[if lte IE 8]>
+  <script src="bower_components/respond.min.js"></script>
+  <script src="bower_components/html5shiv.js"></script>
+  <![endif]-->
+
+  <!-- build:js app/vendor.js -->
+  <% _.each( vendor_files.js, function( scriptSrc ){ %>
+  <script src="<%= scriptSrc %>"></script><% }); %>
+  <!-- endbuild -->
+
+  <!-- build:js app/index/index.js -->
+  <!-- injector:js -->
+  <!-- endinjector -->
+  <!-- endbuild -->
+
+</head>
+
+<body ng-app="ngmp.index" ng-controller="AppCtrl as appCtrl" id="ng-app">
+
+  <div ui-view="header"></div>
+  <div class="main-content-container">
+    <div ui-view="sampleView1"></div>
+    <div ui-view="sampleView2"></div>
+  </div>
+  <div ui-view="footer"></div>
+  <sup>{{message}}</sup>
+</body>
+
+</html>

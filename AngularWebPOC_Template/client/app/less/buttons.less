@@ -1,0 +1,40 @@
+@import "../../bower_components/bootstrap/less/mixins/buttons.less"; //contains mixin
+@import "./color-mappings";
+@import "./typography-mappings";
+
+// Custom Buttons
+//
+// .btn-primary  - Primary button
+// .btn-inactive - Disabled or inactive buttons
+// .btn-alert    - Alert button
+//
+// Markup:
+// <a href="#" class="btn {$modifiers}">Link Button</a>
+// <button class="btn {$modifiers}">Button Element</button>
+//
+// Styleguide 3.1
+
+.btn {
+  font-size: @fs-btn;
+}
+
+.btn-primary {
+  .button-variant(@c-btn-primary, @c-btn-primary-bg, @c-btn-primary-border);
+}
+
+.btn-primary-2 {
+  .button-variant(@c-btn-primary-2, @c-btn-primary-bg-2, @c-btn-primary-border-2);
+  padding: 7px 20px;
+  border: 0;
+  &:hover {
+    background-color: @c-btn-primary-bg-2;
+  }
+}
+
+.btn-inactive {
+  .button-variant(@c-btn-inactive, @c-btn-inactive-bg, @c-btn-inactive-border);
+}
+
+.btn-alert {
+  .button-variant(@c-btn-alert, @c-btn-alert-bg, @c-btn-alert-border);
+}

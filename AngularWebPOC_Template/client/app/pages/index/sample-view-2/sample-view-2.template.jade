@@ -1,0 +1,14 @@
+.sample-view-2
+  .container
+    .row
+      .col-xs-12
+        h2 Sample View 2
+        form(ng-submit="sampleView2Ctrl.sendMessage(message)")
+          .form-group
+            label(for="message") Message
+            input.form-control(type="text" ng-model="message")
+          button.btn.btn-default(type="submit") Send Message
+    .row
+      .col-xs-12
+        p {{sentMessage}}
+

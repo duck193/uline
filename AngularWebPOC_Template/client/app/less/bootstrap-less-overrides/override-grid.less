@@ -1,0 +1,25 @@
+//
+// Grid system
+// --------------------------------------------------
+
+
+// Container widths
+//
+// Set the container width, and override it for fixed navbars in media queries.
+
+.container {
+  //At the medium breakpoint, overriding the bootstrap default to set a static width
+  //for a container. Since our container and breakpoint are equal width values, browsers
+  //with an attached scrollbar would cut into that, causing a horizontal scrollbar.
+  //This just makes it so the container isn't forced to be that width and can be a bit smaller
+  //until the viewport is larger and the scrollbar goes away.
+  @media (min-width: @screen-md-min) {
+    width: auto;
+    max-width: @container-md;
+  }
+
+  //left/right padding for top level containers to make sure content isn't flush with the side of the page
+  @media (max-width: @screen-xs-max) {
+    padding: 0 20px;
+  }
+}
